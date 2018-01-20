@@ -29,30 +29,34 @@ def ex(command, p=True):
     process.close()
     return output
 
-def takeImage2(filename):
+def takeImage2(filename, tm):
     adb = "%userprofile%\\AppData\\Local\\Android\\Sdk\\platform-tools\\adb "
     dcim = "/storage/emulated/0/DCIM/Camera/"
 
     # Take photo
     ex(adb + 'shell input keyevent 27')
-    time.sleep(.6+.2)
+    time.sleep(.6+.1)
+    tm.measure("Photo taken")
 
     # Get filename
     files = ex(adb + 'shell ls ' + dcim).strip().split("\n")
     file = files[-1]
-    print(file)
 
     # Pull and remove from device
     ex(adb + 'pull ' + dcim + file + ' .', p=False)
+    tm.measure("Pull")
     ex(adb + 'shell rm ' + dcim + file)
+    tm.measure("Remove")
 
     # Compress
     picture = Image.open(file)
     os.remove(filename) if os.path.exists(filename) else None
     picture.save(filename, "JPEG", optimize=True, quality=50)
+    tm.measure("Compress")
 
     # Remove temp file
     os.remove(file)
+    tm.measure("Remove")
 
-if __name__ == '__main__':
-    takeImage2("image.jpg")
+#if __name__ == '__main__':
+#    takeImage2("image.jpg")
