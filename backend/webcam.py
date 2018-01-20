@@ -17,6 +17,7 @@
 import urllib.request
 import os
 import time
+from PIL import Image
 
 def takeImage(filename):
     url = "http://localhost:4747/cam/1/frame.jpg"
@@ -32,17 +33,26 @@ def takeImage2(filename):
     adb = "%userprofile%\\AppData\\Local\\Android\\Sdk\\platform-tools\\adb "
     dcim = "/storage/emulated/0/DCIM/Camera/"
 
+    # Take photo
     ex(adb + 'shell input keyevent 27')
-    time.sleep(2)
+    time.sleep(.6+.2)
 
+    # Get filename
     files = ex(adb + 'shell ls ' + dcim).strip().split("\n")
     file = files[-1]
     print(file)
 
+    # Pull and remove from device
     ex(adb + 'pull ' + dcim + file + ' .', p=False)
     ex(adb + 'shell rm ' + dcim + file)
+
+    # Compress
+    picture = Image.open(file)
     os.remove(filename) if os.path.exists(filename) else None
-    os.rename(file, filename)
+    picture.save(filename, "JPEG", optimize=True, quality=50)
+
+    # Remove temp file
+    os.remove(file)
 
 if __name__ == '__main__':
     takeImage2("image.jpg")
