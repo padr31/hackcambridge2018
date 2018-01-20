@@ -47,6 +47,8 @@ class AzureClient:
         headers = dict()
         headers['Ocp-Apim-Subscription-Key'] = self.key
         headers['Content-Type'] = 'application/octet-stream'
+        headers['Accept - Encoding'] = 'gzip'
+
 
         json = None
         params = None
