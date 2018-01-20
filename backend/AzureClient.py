@@ -1,4 +1,5 @@
 import requests
+import time
 
 class AzureClient:
 
@@ -57,3 +58,9 @@ class AzureClient:
 #   path_to_img = "/Users/markopuza/Downloads/IMG_20180120_131159.jpg"
 #   ac = AzureClient()
 #   response = ac.process_image(path_to_img)
+
+if __name__ == '__main__':
+    path_to_img = "image.jpg"
+    ac = AzureClient()
+    response = ac.process_image(path_to_img)
+    print(response)
