@@ -34,15 +34,22 @@ class ImageDrawer:
         result = self.ac.process_request( json, data, headers, params )
 
         if result is not None:
-            # Load the original image from disk
-            data8uint = np.fromstring(data, np.uint8)  # Convert string to an unsigned int array
-            img = cv2.cvtColor(cv2.imdecode(data8uint, cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
+            self.write_image(image_path, result, target_path)
 
-            self.renderResultOnImage(result, img)
+    def write_image(self, image_path, result, target_path):
+        with open( image_path, 'rb' ) as f:
+            data = f.read()
 
-            ig, ax = plt.subplots(figsize=(15, 20))
-            ax.imshow(img)
-            plt.savefig(target_path)
+        # Load the original image from disk
+        data8uint = np.fromstring(data, np.uint8)  # Convert string to an unsigned int array
+        img = cv2.cvtColor(cv2.imdecode(data8uint, cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
+
+        self.renderResultOnImage(result, img)
+
+        ig, ax = plt.subplots(figsize=(15, 20))
+        ax.imshow(img)
+        plt.savefig(target_path)
+
 
 # sample use
 #
