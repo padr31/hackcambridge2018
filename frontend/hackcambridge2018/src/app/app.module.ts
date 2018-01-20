@@ -5,12 +5,15 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { AppComponent } from './app.component';
 import { CardComponent} from './components/card/card.component'
 import { ImageComponent} from './components/card/image-component/image.component'
+import { NavbarComponent} from './components/navbar/navbar.component'
+
 
 @NgModule({
   declarations: [
     AppComponent,
     CardComponent,
-    ImageComponent
+    ImageComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
