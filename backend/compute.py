@@ -4,14 +4,15 @@ import math
 def compute(o):
     # print(o)
     vals = [evalPerson(p) for p in o]
-    avg = sum(vals) / len(vals)
-    print("Average: " + str(avg))
+    if len(vals) == 0: return 0
 
+    avg = sum(vals) / len(vals)
+    return avg
 
 def evalPerson(p):
     s = p['scores']
     r = p['faceRectangle']
-    print(s)
+    #print(s)
 
     interest = s['happiness'] ** 2 \
            - s['sadness'] ** 2 \
