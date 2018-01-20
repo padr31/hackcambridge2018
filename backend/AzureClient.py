@@ -52,6 +52,7 @@ class AzureClient:
         result = self.process_request(json, data, headers, params)
         return result
 
+
 # example use:
 #   path_to_img = "/Users/markopuza/Downloads/IMG_20180120_131159.jpg"
 #   ac = AzureClient()

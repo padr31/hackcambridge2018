@@ -2,7 +2,6 @@
 from flask import Flask
 from AzureClient import AzureClient
 import webcam
-import compute
 
 FILENAME = '/Users/michal/Desktop/pictures'
 
@@ -14,7 +13,7 @@ client = AzureClient()
 def index():
     webcam.takeImage(FILENAME)
     response = client.process_image(FILENAME)
-    return compute(response)
+    return response
 
 
 if __name__ == '__main__':
