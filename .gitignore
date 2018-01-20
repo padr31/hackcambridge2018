@@ -42,3 +42,5 @@ tmtagsHistory
 *.sublime-workspace
 .bundle
 
+# Project specific
+tmp
