@@ -35,7 +35,7 @@ def takeImage2(filename, tm):
 
     # Take photo
     ex(adb + 'shell input keyevent 27')
-    time.sleep(.6+.1)
+    time.sleep(.6+.2)
     tm.measure("Photo taken")
 
     # Get filename
@@ -43,19 +43,19 @@ def takeImage2(filename, tm):
     file = files[-1]
 
     # Pull and remove from device
-    ex(adb + 'pull ' + dcim + file + ' .', p=False)
+    ex(adb + 'pull ' + dcim + file + ' tmp', p=False)
     tm.measure("Pull")
     ex(adb + 'shell rm ' + dcim + file)
     tm.measure("Remove")
 
     # Compress
-    picture = Image.open(file)
+    picture = Image.open("tmp/" + file)
     os.remove(filename) if os.path.exists(filename) else None
-    picture.save(filename, "JPEG", optimize=True, quality=50)
+    picture.save(filename, "JPEG", optimize=True, quality=10)
     tm.measure("Compress")
 
     # Remove temp file
-    os.remove(file)
+    #os.remove("tmp/" + file)
     tm.measure("Remove")
 
 #if __name__ == '__main__':

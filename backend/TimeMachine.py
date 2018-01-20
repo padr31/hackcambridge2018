@@ -17,4 +17,5 @@ class TimeMachine:
         return self.times[-1] - self.st
 
     def __str__(self):
-        return ", ".join(name + ": " + ("%.02f" % time) for (name, time) in zip(self.names, self.times))
+        return ", ".join(name + ": " + ("%.02f" % time) for (name, time) in zip(self.names, self.times)) \
+            + ", TOTAL: " + ("%.02f" % sum(self.times))
