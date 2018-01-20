@@ -21,7 +21,7 @@ class ImageDrawer:
             textToWrite = "%s" % ( currEmotion )
             cv2.putText( img, textToWrite, (faceRectangle['left'],faceRectangle['top']-10), cv2.FONT_HERSHEY_TRIPLEX, 2, (255,0,0), 1 )
 
-    def draw_image(self, image_path):
+    def draw_image(self, image_path, target_path):
 
         with open( image_path, 'rb' ) as f:
             data = f.read()
@@ -42,10 +42,15 @@ class ImageDrawer:
 
             ig, ax = plt.subplots(figsize=(15, 20))
             ax.imshow(img)
-            plt.savefig('faces_detected.png')
+            plt.savefig(target_path)
 
 # sample use
 #
 # now in this directory, you will find an annotated photo
 # id = ImageDrawer()
 # id.draw_image('/Users/markopuza/Downloads/IMG_20180120_131159.jpg')
+
+if __name__ == '__main__':
+    path_to_img = "image.jpg"
+    id = ImageDrawer()
+    id.draw_image(path_to_img, "image_s.jpg")
