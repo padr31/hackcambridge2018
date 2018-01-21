@@ -1,5 +1,6 @@
 import json
 import math
+from random import randint
 
 def compute(o):
     # print(o)
@@ -73,3 +74,11 @@ def average(frame):
         feeling[k] /= len(frame)
 
     return feeling
+
+def get_suggestion(last=None):
+    if last and not randint(0, 3):
+        return last
+    sugs = ['You can do this!', 'You rock!', 'Keep it up!', 'Go deeper!', 'Gimme more!', \
+            'Just DO IT!!', 'You can. You will!', 'If not you, who???', 'If not now, when???',
+            'Conquer from within.', 'Do epic shit.', 'You can.']
+    return sugs[randint(0, len(sugs)-1)]

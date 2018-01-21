@@ -25,6 +25,7 @@ COLORS = {
     'sadness': '#707784',
     'surprise': '#aa94d0'
 }
+CURRENT_SUGGESTION = compute.get_suggestion()
 
 app = Flask(__name__, static_url_path='')
 client = AzureClient()
@@ -44,6 +45,8 @@ def process():
     tm = TimeMachine()
     tm.start()
     print("Process started")
+
+    CURRENT_SUGGESTION = compute.get_suggestion(CURRENT_SUGGESTION)
 
     # ===== Getting data =====
 
@@ -120,7 +123,8 @@ def process():
         "isa": isa,
         "histogram": histogram_data,
         "status": status,
-        "status_color": COLORS[status]
+        "status_color": COLORS[status],
+        "suggestion": CURRENT_SUGGESTION
     }
     return json.dumps(response)
 
