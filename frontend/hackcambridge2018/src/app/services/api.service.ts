@@ -47,7 +47,7 @@ export class ApiService {
         .subscribe(
             data => {
             this.imageChange.next((data));
-            console.log("processed, going for another");
+            //console.log("processed, going for another");
             this.repeatProcess(this.processLocation);
         }); 
     }
