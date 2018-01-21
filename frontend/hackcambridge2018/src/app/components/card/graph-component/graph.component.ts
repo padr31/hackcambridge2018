@@ -14,7 +14,8 @@ export class GraphComponent implements OnInit {
     public chartType:string = 'line';
         
     public chartDatasets:Array<any> = [
-        {data: [], label: 'Happiness'}    
+        {data: [], label: 'is'},
+        {data: [], label: 'isa'}    
     ];
 
     constructor(apiService:ApiService) {
@@ -25,7 +26,8 @@ export class GraphComponent implements OnInit {
         this.processSubscription = this.apiService.imageChange.subscribe(
             data => {
                 console.log("Got data in graph-component");
-                this.chartDatasets = data.is;
+                this.chartDatasets = [{data: data.is, label:"is"},
+                                      {data: data.isa, label:"isa"}];
                 this.chartLabels = data.ts;
                 console.log(this.chartDatasets);
                 console.log(this.chartLabels);
@@ -44,6 +46,15 @@ export class GraphComponent implements OnInit {
             pointBorderColor: '#fff',
             pointHoverBackgroundColor: '#fff',
             pointHoverBorderColor: 'rgba(151,187,205,1)'
+        },
+        {
+            backgroundColor: 'rgba(255,187,205,0.2)',
+            borderColor: 'rgba(255,0,205,1)',
+            borderWidth: 2,
+            pointBackgroundColor: 'rgba(151,187,205,1)',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgba(151,187,205,1)'
         }
     ];
 
@@ -51,7 +62,7 @@ export class GraphComponent implements OnInit {
         responsive: true,
         scales: {
             yAxes: [{
-                stacked: true
+                stacked: false
             }]
         }
     };

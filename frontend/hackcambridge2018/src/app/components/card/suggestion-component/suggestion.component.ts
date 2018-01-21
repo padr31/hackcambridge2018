@@ -9,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 
 export class SuggestionComponent implements OnInit {
     
-    suggestion = "Say a Joke";  
+    suggestion = "Say a joke";  
 
     constructor() { 
         
