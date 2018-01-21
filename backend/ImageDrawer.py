@@ -9,19 +9,20 @@ class ImageDrawer:
     def __init__(self):
         self.ac = AzureClient()
 
-    def renderResultOnImage(self, result, img):
+    def renderResultOnImage(self, result, img, plot_caption=False):
         for currFace in result:
             faceRectangle = currFace['faceRectangle']
             cv2.rectangle( img,(faceRectangle['left'],faceRectangle['top']),
                                (faceRectangle['left']+faceRectangle['width'], faceRectangle['top'] + faceRectangle['height']),
                            color = (255,0,0), thickness = 5 )
-        for currFace in result:
-            faceRectangle = currFace['faceRectangle']
-            currEmotion = max(currFace['scores'].items(), key=operator.itemgetter(1))[0]
-            textToWrite = "%s" % ( currEmotion )
-            cv2.putText( img, textToWrite, (faceRectangle['left'],faceRectangle['top']-10), cv2.FONT_HERSHEY_TRIPLEX, 2, (255,0,0), 1 )
+        if plot_caption:
+            for currFace in result:
+                faceRectangle = currFace['faceRectangle']
+                currEmotion = max(currFace['scores'].items(), key=operator.itemgetter(1))[0]
+                textToWrite = "%s" % ( currEmotion )
+                cv2.putText( img, textToWrite, (faceRectangle['left'],faceRectangle['top']-10), cv2.FONT_HERSHEY_TRIPLEX, 2, (255,0,0), 1 )
 
-    def draw_image(self, image_path, target_path):
+    def draw_image(self, image_path, target_path, dpi=90):
 
         with open( image_path, 'rb' ) as f:
             data = f.read()
@@ -34,9 +35,9 @@ class ImageDrawer:
         result = self.ac.process_request( json, data, headers, params )
 
         if result is not None:
-            self.write_image(image_path, result, target_path)
+            self.write_image(image_path, result, target_path, dpi)
 
-    def write_image(self, image_path, result, target_path):
+    def write_image(self, image_path, result, target_path, dpi=90):
         with open( image_path, 'rb' ) as f:
             data = f.read()
 
@@ -46,9 +47,11 @@ class ImageDrawer:
 
         self.renderResultOnImage(result, img)
 
-        ig, ax = plt.subplots(figsize=(15, 20))
+        ig, ax = plt.subplots(figsize=(15, 20), frameon=False)
+        ax.set_axis_off()
+
         ax.imshow(img)
-        plt.savefig(target_path)
+        plt.savefig(target_path, dpi=dpi, bbox_inches='tight', pad_inches=-1)
 
 
 # sample use
@@ -58,6 +61,6 @@ class ImageDrawer:
 # id.draw_image('/Users/markopuza/Downloads/IMG_20180120_131159.jpg')
 
 if __name__ == '__main__':
-    path_to_img = "image.jpg"
+    path_to_img = "/Users/markopuza/Downloads/IMG_20180120_131159.jpg"
     id = ImageDrawer()
     id.draw_image(path_to_img, "image_s.jpg")
