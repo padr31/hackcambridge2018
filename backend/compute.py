@@ -50,7 +50,7 @@ def status(history):
 
 
 def _averageFrames(history):
-    return list(map(lambda frame: average(frame)), history)
+    return list(map(lambda frame: average(frame), history))
 
 
 def average(frame):
