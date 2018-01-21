@@ -1,6 +1,6 @@
 #!flask/bin/python
 from time import time
-from flask import Flask, send_file
+from flask import Flask, send_file, request
 import json
 
 from AzureClient import AzureClient
@@ -8,9 +8,11 @@ import webcam
 import compute
 from ImageDrawer import ImageDrawer
 from TimeMachine import TimeMachine
+from threading import Thread
 
 FILENAME = 'image.jpg'
 FILENAME2 = 'image_s.jpg'
+MULTITHREADING = False
 
 app = Flask(__name__, static_url_path='')
 client = AzureClient()
@@ -30,12 +32,31 @@ def process():
     tm.start()
     print("Process started")
 
-    webcam.takeImage2(FILENAME, tm)
-    recognized = client.process_image(FILENAME)
+    take_photo = request.args.get('photo', default="1") == "1"
+    file = request.args.get('file', default=FILENAME)
+
+    if file != FILENAME:
+        webcam.compress(file, file + "_.jpg")
+        file = file + "_.jpg"
+
+    if take_photo:
+        if MULTITHREADING:
+            thread = Thread(target=webcam.takeImage2, args=(FILENAME, tm))
+            thread.start()
+        else:
+            webcam.takeImage2(FILENAME, tm)
+
+    print(file)
+    recognized = client.process_image(file)
+    recognized.sort(key=lambda p: p["faceRectangle"]["left"])
     tm.measure("Request")
-    #id.write_image(FILENAME, recognized, FILENAME2)
+
+    id.write_image(file, recognized, FILENAME2)
     interest = compute.compute(recognized)
     tm.measure("Compute")
+
+    if MULTITHREADING and take_photo:
+        thread.join()
 
     print(tm)
     duration = tm.duration()
