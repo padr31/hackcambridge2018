@@ -10,32 +10,32 @@ export class LongGraphComponent implements OnInit {
 
     processSubscription:Subscription;
     apiService:ApiService;
-    
+
     public chartType:string = 'line';
-        
+
     public chartDatasets:Array<any> = [
-        {data: [], label: 'isa'}    
+        {data: [], label: 'isa'}
     ];
 
     constructor(apiService:ApiService) {
         this.apiService = apiService;
      }
-    
-    ngOnInit() { 
+
+    ngOnInit() {
         this.processSubscription = this.apiService.imageChange.subscribe(
             data => {
                 console.log("Long graph");
                 //this.chartLabels = data.ts;
                 while(this.chartLabels.length < data.ts.length) this.chartLabels.push('')
                 this.chartDatasets = [{data: data.isa, label:"isa"}];
-                
+
                 /*
                 if(this.chartLabels.length == 0){
                     this.chartLabels = [].fill('', data.isa.length);
                 }else {
                     this.chartLabels.push('');
                 }*/
-                 
+
                 console.log(this.chartDatasets);
                 console.log(this.chartLabels);
             }
@@ -57,20 +57,23 @@ export class LongGraphComponent implements OnInit {
         }
     ];
 
-    public chartOptions:any = { 
+    public chartOptions:any = {
         responsive: true,
         scales: {
             yAxes: [{
                 stacked: false
             }]
-        }
+        },
+      legend: {
+        display: false
+      },
     };
 
-    public chartClicked(e: any): void { 
-            
-    } 
-    
-    public chartHovered(e: any): void { 
-            
+    public chartClicked(e: any): void {
+
+    }
+
+    public chartHovered(e: any): void {
+
     }
 }

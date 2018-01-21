@@ -10,18 +10,18 @@ export class ShortGraphComponent implements OnInit {
 
     processSubscription:Subscription;
     apiService:ApiService;
-    
+
     public chartType:string = 'line';
-        
+
     public chartDatasets:Array<any> = [
-        {data: [], label: 'isa'}    
+        {data: [], label: 'isa'}
     ];
 
     constructor(apiService:ApiService) {
         this.apiService = apiService;
      }
-    
-    ngOnInit() { 
+
+    ngOnInit() {
         this.processSubscription = this.apiService.imageChange.subscribe(
             data => {
                 console.log("Short graph");
@@ -57,20 +57,23 @@ export class ShortGraphComponent implements OnInit {
         }
     ];
 
-    public chartOptions:any = { 
+    public chartOptions:any = {
         responsive: true,
         scales: {
             yAxes: [{
                 stacked: false
             }]
-        }
+        },
+      legend: {
+        display: false
+      },
     };
 
-    public chartClicked(e: any): void { 
-            
-    } 
-    
-    public chartHovered(e: any): void { 
-            
+    public chartClicked(e: any): void {
+
+    }
+
+    public chartHovered(e: any): void {
+
     }
 }
