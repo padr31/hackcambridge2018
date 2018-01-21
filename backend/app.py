@@ -13,8 +13,8 @@ from threading import Thread
 EMOTIONS = ["anger", "contempt", "disgust", "fear", "happiness", "neutral", "sadness", "surprise"]
 FILENAME = 'image.jpg'
 FILENAME2 = 'image_s.jpg'
-DEBUG = True
-MULTITHREADING = not DEBUG
+DEBUG = False
+MULTITHREADING = False
 COLORS = {
     'anger': '#934451',
     'contempt': '#ffe6ae',
