@@ -41,3 +41,35 @@ def evalPerson(p):
     p["relative_width"] = relative_width
 
     return (interest, weight)
+
+def status(history):
+    if len(history) == 0:
+        return 'neutral'
+    feelings =  _averageFrames(history)
+    return max((sum(f[k] for f in feelings), k) for k,v in feelings[0].items())[1]
+
+
+def _averageFrames(history):
+    return list(map(lambda frame: average(frame)), history)
+
+
+def average(frame):
+    feeling = {
+        'anger': 0,
+        'contempt': 0,
+        'disgust': 0,
+        'fear': 0,
+        'happiness': 0,
+        'neutral': 0,
+        'sadness': 0,
+        'surprise': 0
+    }
+
+    for person in frame:
+        for k,v in person['scores'].items():
+            feeling[k] += v
+
+    for k, v in feeling.items():
+        feeling[k] /= len(frame)
+
+    return feeling
