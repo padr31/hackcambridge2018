@@ -1,1 +1,13 @@
-Short Graph
+<div style="display: block">
+        <canvas mdbChart 
+            [chartType]="chartType"
+            [datasets]="chartDatasets" 
+            [labels]="chartLabels"
+            [colors]="chartColors"
+            [options]="chartOptions"
+            [legend]="true"
+            (chartHover)="chartHovered($event)" 
+            (chartClick)="chartClicked($event)">
+        </canvas>
+    </div>
+            
