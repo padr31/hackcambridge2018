@@ -20,17 +20,17 @@ def evalPerson(p):
     r = p['faceRectangle']
     #print(s)
 
-    exP = 1/1.2
+    exP = 1/2
     exN = 1/exP
 
-    interest = s['happiness'] ** exP \
-           + s['surprise'] ** exP \
-           + s['fear'] ** exP \
-           + s['contempt'] ** exP \
-           - s['sadness'] ** exN \
-           - s['disgust'] ** exN \
-           - s['anger'] ** exN \
-           - math.exp((s['neutral'] - 1)*4)
+    interest = 1 - math.exp(- s['happiness'] * 5)
+           #+ s['surprise'] ** exP \
+           #+ s['fear'] ** exP \
+           #+ s['contempt'] ** exP \
+           #- s['sadness'] ** exN \
+           #- s['disgust'] ** exN \
+           #- s['anger'] ** exN \
+           #- math.exp((s['neutral'] - 1)*4)
     area = r['width'] * r['height'] / float(4608 * 3456)
     relative_width = math.sqrt(r['width'] * r['height'] / float(4608 * 3456))
     #weight = (1 - math.exp(-area * 234)) * (1 - s["neutral"] / 2)
