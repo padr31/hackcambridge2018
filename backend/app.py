@@ -10,9 +10,10 @@ from ImageDrawer import ImageDrawer
 from TimeMachine import TimeMachine
 from threading import Thread
 
+EMOTIONS = ["anger", "contempt", "disgust", "fear", "happiness", "neutral", "sadness", "surprise"]
 FILENAME = 'image.jpg'
 FILENAME2 = 'image_s.jpg'
-DEBUG = False
+DEBUG = True
 MULTITHREADING = not DEBUG
 
 app = Flask(__name__, static_url_path='')
@@ -22,6 +23,7 @@ id = ImageDrawer()
 h_ts = []
 h_is = []
 h_ds = []
+history = []
 
 @app.route('/')
 def index():
@@ -32,6 +34,8 @@ def process():
     tm = TimeMachine()
     tm.start()
     print("Process started")
+
+    # ===== Getting data =====
 
     take_photo = request.args.get('photo', default="1") == "1"
     file = request.args.get('file', default=FILENAME)
@@ -65,9 +69,14 @@ def process():
     print(tm)
     duration = tm.duration()
 
+    # ===== Store timeframe =====
+
     h_ts.append(tm.st)
     h_is.append(interest)
     h_ds.append(duration)
+    history.append(recognized)
+
+    # ===== Postprocessing =====
 
     def take_data(arr):
         return arr[-10:]
@@ -80,6 +89,12 @@ def process():
             diff = max(past - current - 0.1, 0)
             isa[i] += diff * 0.4
 
+    histogram_frames = 2
+    histogram_data = {
+        emotion: sum(sum(person["scores"][emotion] for person in obj) for obj in history[-histogram_frames:]) / histogram_frames
+                    for emotion in EMOTIONS
+    }
+
     response = {
         "time": tm.st,
         "interest": interest,
@@ -90,7 +105,8 @@ def process():
         "ts": take_data(h_ts),
         "is": take_data(h_is),
         "ds": take_data(h_ds),
-        "isa": isa
+        "isa": isa,
+        "histogram": histogram_data
     }
     return json.dumps(response)
 
