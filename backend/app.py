@@ -12,7 +12,8 @@ from threading import Thread
 
 FILENAME = 'image.jpg'
 FILENAME2 = 'image_s.jpg'
-MULTITHREADING = False
+DEBUG = False
+MULTITHREADING = not DEBUG
 
 app = Flask(__name__, static_url_path='')
 client = AzureClient()
@@ -51,8 +52,11 @@ def process():
     recognized.sort(key=lambda p: p["faceRectangle"]["left"])
     tm.measure("Request")
 
-    id.write_image(file, recognized, FILENAME2)
+    if DEBUG:
+        id.write_image(file, recognized, FILENAME2)
     interest = compute.compute(recognized)
+    if (interest == 0) and (len(h_is) >= 1):
+        interest = h_is[-1]
     tm.measure("Compute")
 
     if MULTITHREADING and take_photo:
@@ -65,6 +69,17 @@ def process():
     h_is.append(interest)
     h_ds.append(duration)
 
+    def take_data(arr):
+        return arr[-10:]
+
+    isa = take_data(h_is)
+    for i in range(len(isa)):
+        current = isa[i]
+        if i > 0:
+            past = isa[i-1]
+            diff = max(past - current - 0.1, 0)
+            isa[i] += diff * 0.4
+
     response = {
         "time": tm.st,
         "interest": interest,
@@ -72,9 +87,10 @@ def process():
         "people": len(recognized),
         "tm": str(tm),
         "debug": recognized,
-        "ts": h_ts,
-        "is": h_is,
-        "ds": h_ds,
+        "ts": take_data(h_ts),
+        "is": take_data(h_is),
+        "ds": take_data(h_ds),
+        "isa": isa
     }
     return json.dumps(response)
 
