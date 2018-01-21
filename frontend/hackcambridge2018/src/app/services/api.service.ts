@@ -13,21 +13,21 @@ export class ApiService {
 
     public imageChange: Subject<PResponse> = new Subject<PResponse>();
     imageLocation: string = "https://jsonplaceholder.typicode.com/photos/1";
-    processLocation: string = "http://172.20.1.132:5000/process";
+    processLocation: string = "http://localhost:5000/process";
 
-    constructor(private http: HttpClient) { 
+    constructor(private http: HttpClient) {
         console.log("Subscribing");
-        
+
         this.repeatProcess(this.processLocation);
     }
-    
+
 
     getImage(imageUrl: string): Observable<string> {
         let headers = new HttpHeaders();
         headers.append('Access-Control-Allow-Origin','*');
 
         return this.http
-            .get<string>(this.imageLocation, {headers: headers});    
+            .get<string>(this.imageLocation, {headers: headers});
     }
 
     process(processUrl:string): Observable<PResponse> {
@@ -35,7 +35,7 @@ export class ApiService {
         headers.append('Access-Control-Allow-Origin','*');
 
         return this.http
-            .get<PResponse>(processUrl, {headers: headers}); 
+            .get<PResponse>(processUrl, {headers: headers});
     }
 
     repeatProcess(processUrl:string) {
@@ -49,7 +49,7 @@ export class ApiService {
             this.imageChange.next((data));
             //console.log("processed, going for another");
             this.repeatProcess(this.processLocation);
-        }); 
+        });
     }
 
     /*getImageInInterval(imageUrl: string): Observable<string> {
@@ -61,5 +61,5 @@ export class ApiService {
            console.log(data)
         })
     }*/
-    
+
 }
