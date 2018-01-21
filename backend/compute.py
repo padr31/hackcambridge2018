@@ -65,6 +65,7 @@ def average(frame):
         'sadness': 0,
         'surprise': 0
     }
+    if len(frame) == 0: return feeling
 
     for person in frame:
         for k,v in person['scores'].items():

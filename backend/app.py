@@ -46,7 +46,7 @@ def process():
     tm.start()
     print("Process started")
 
-    CURRENT_SUGGESTION = compute.get_suggestion(CURRENT_SUGGESTION)
+    CURRENT_SUGGESTION = compute.get_suggestion()
 
     # ===== Getting data =====
 
@@ -66,11 +66,14 @@ def process():
 
     print(file)
     recognized = client.process_image(file)
+    if recognized is None:
+        recognized = []
+        print("Azure returned None")
     recognized.sort(key=lambda p: p["faceRectangle"]["left"])
     tm.measure("Request")
 
-    if DEBUG:
-        id.write_image(file, recognized, FILENAME2)
+    #if DEBUG:
+    id.write_image(file, recognized, FILENAME2)
     interest = compute.compute(recognized)
     if (interest == 0) and (len(h_is) >= 1):
         interest = h_is[-1]
@@ -91,10 +94,7 @@ def process():
 
     # ===== Postprocessing =====
 
-    def take_data(arr):
-        return arr[-10:]
-
-    isa = take_data(h_is)
+    isa = h_is
     for i in range(len(isa)):
         current = isa[i]
         if i > 0:
@@ -102,11 +102,11 @@ def process():
             diff = max(past - current - 0.1, 0)
             isa[i] += diff * 0.4
 
-    histogram_frames = 2
-    histogram_data = {
-        emotion: sum(sum(person["scores"][emotion] for person in obj) for obj in history[-histogram_frames:]) / histogram_frames
+    histogram_frames = history[-4:]
+    histogram_data = [
+        sum(sum(person["scores"][emotion] for person in obj) for obj in histogram_frames) / len(histogram_frames)
                     for emotion in EMOTIONS
-    }
+    ]
 
     status = compute.status(history)
 
@@ -117,11 +117,12 @@ def process():
         "people": len(recognized),
         "tm": str(tm),
         "debug": recognized,
-        "ts": take_data(h_ts),
-        "is": take_data(h_is),
-        "ds": take_data(h_ds),
+        "ts": h_ts,
+        "is": h_is,
+        "ds": h_ds,
         "isa": isa,
         "histogram": histogram_data,
+        "histogram_labels": EMOTIONS,
         "status": status,
         "status_color": COLORS[status],
         "suggestion": CURRENT_SUGGESTION
@@ -130,7 +131,7 @@ def process():
 
 @app.route('/last_image.jpg')
 def send_image():
-    return send_file("image.jpg")
+    return send_file("image_s.jpg")
 
 @app.route('/img')
 def randomimg():
