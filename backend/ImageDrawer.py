@@ -47,11 +47,13 @@ class ImageDrawer:
 
         self.renderResultOnImage(result, img)
 
-        ig, ax = plt.subplots(figsize=(15, 20), frameon=False)
+        fig, ax = plt.subplots(figsize=(15, 20), frameon=False)
         ax.set_axis_off()
 
         ax.imshow(img)
         plt.savefig(target_path, dpi=dpi, bbox_inches='tight', pad_inches=-1)
+        plt.cla()
+        plt.close(fig)
 
 
 # sample use
@@ -61,6 +63,6 @@ class ImageDrawer:
 # id.draw_image('/Users/markopuza/Downloads/IMG_20180120_131159.jpg')
 
 if __name__ == '__main__':
-    path_to_img = "/Users/markopuza/Downloads/IMG_20180120_131159.jpg"
+    path_to_img = ""
     id = ImageDrawer()
     id.draw_image(path_to_img, "image_s.jpg")
