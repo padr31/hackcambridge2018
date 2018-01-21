@@ -14,7 +14,7 @@ class ImageDrawer:
             faceRectangle = currFace['faceRectangle']
             cv2.rectangle( img,(faceRectangle['left'],faceRectangle['top']),
                                (faceRectangle['left']+faceRectangle['width'], faceRectangle['top'] + faceRectangle['height']),
-                           color = (255,0,0), thickness = 5 )
+                           color = (0,255,0), thickness = 20 )
         if plot_caption:
             for currFace in result:
                 faceRectangle = currFace['faceRectangle']
@@ -63,6 +63,6 @@ class ImageDrawer:
 # id.draw_image('/Users/markopuza/Downloads/IMG_20180120_131159.jpg')
 
 if __name__ == '__main__':
-    path_to_img = ""
+    path_to_img = "/Users/markopuza/Downloads/IMG_20180120_131159.jpg"
     id = ImageDrawer()
     id.draw_image(path_to_img, "image_s.jpg")
