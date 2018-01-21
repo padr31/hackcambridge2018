@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../services/api.service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
     selector: 'qute-component',
@@ -6,7 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class QuteComponent implements OnInit {
-    constructor() { }
+ 
+    apiService:ApiService;
+    processSubscription:Subscription;        
 
-    ngOnInit() { }
+    constructor(apiService:ApiService) { 
+        this.apiService = apiService;
+    }
+
+    ngOnInit() { 
+        this.processSubscription = this.apiService.imageChange.subscribe(
+            data => {
+                this.suggestion = data.suggestion;
+            }
+        );
+
+    }
 }

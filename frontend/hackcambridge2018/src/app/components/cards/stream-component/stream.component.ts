@@ -22,8 +22,8 @@ export class StreamComponent implements OnInit, OnDestroy {
     ngOnInit() { 
         this.processSubscription = this.apiService.imageChange.subscribe(
             data => {
-                console.log("Got data in image-component");
-                console.log(data);
+                //console.log("Got data in image-component");
+                //console.log(data);
                 this.imageUrl = this.defaultImageUrl + "?t=" + new Date().getTime();
             }
         );

@@ -24,10 +24,10 @@ export class ShortGraphComponent implements OnInit {
     ngOnInit() { 
         this.processSubscription = this.apiService.imageChange.subscribe(
             data => {
-                console.log("Got data in graph-component");
+                console.log("Short graph");
                 this.chartDatasets = [{data: data.isa.slice(-10), label:"isa"}];
                 this.chartLabels.push('');
-                this.chartLabels.shift();
+                this.chartLabels.shift( );
                 console.log(this.chartDatasets);
                 console.log(this.chartLabels);
             }

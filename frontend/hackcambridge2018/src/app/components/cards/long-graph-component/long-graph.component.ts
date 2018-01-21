@@ -24,16 +24,22 @@ export class LongGraphComponent implements OnInit {
     ngOnInit() { 
         this.processSubscription = this.apiService.imageChange.subscribe(
             data => {
-                console.log("Got data in graph-component");
+                console.log("Long graph");
                 this.chartDatasets = [{data: data.isa, label:"isa"}];
-                this.chartLabels.push(''); 
+                
+                if(this.chartLabels.length == 0){
+                    this.chartLabels = data.ts;
+                }else {
+                    this.chartLabels.push('');
+                }
+                 
                 console.log(this.chartDatasets);
                 console.log(this.chartLabels);
             }
         );
     }
 
-    public chartLabels:Array<any> = ['', '', '', '', '', '', '', '', '', ''];
+    public chartLabels:Array<any> = ['', '', '', '', '', '', '', '', '', '', ''];
 
     public chartColors:Array<any> = [
         {
