@@ -25,13 +25,16 @@ export class LongGraphComponent implements OnInit {
         this.processSubscription = this.apiService.imageChange.subscribe(
             data => {
                 console.log("Long graph");
+                //this.chartLabels = data.ts;
+                while(this.chartLabels.length < data.ts.length) this.chartLabels.push('')
                 this.chartDatasets = [{data: data.isa, label:"isa"}];
                 
+                /*
                 if(this.chartLabels.length == 0){
-                    this.chartLabels = data.ts;
+                    this.chartLabels = [].fill('', data.isa.length);
                 }else {
                     this.chartLabels.push('');
-                }
+                }*/
                  
                 console.log(this.chartDatasets);
                 console.log(this.chartLabels);
@@ -39,7 +42,7 @@ export class LongGraphComponent implements OnInit {
         );
     }
 
-    public chartLabels:Array<any> = ['', '', '', '', '', '', '', '', '', '', ''];
+    public chartLabels:Array<any> = [];
 
     public chartColors:Array<any> = [
         {
