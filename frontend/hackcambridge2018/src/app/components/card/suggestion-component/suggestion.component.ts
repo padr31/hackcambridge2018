@@ -9,10 +9,10 @@ import { Component, OnInit } from '@angular/core';
 
 export class SuggestionComponent implements OnInit {
     
-    suggestion:string;
+    suggestion = "Say a Joke";  
 
     constructor() { 
-        this.suggestion = "Say a Joke."
+        
     }
 
     ngOnInit() { }
