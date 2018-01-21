@@ -15,6 +15,16 @@ FILENAME = 'image.jpg'
 FILENAME2 = 'image_s.jpg'
 DEBUG = True
 MULTITHREADING = not DEBUG
+COLORS = {
+    'anger': '#934451',
+    'contempt': '#ffe6ae',
+    'disgust': '#5e6409',
+    'fear': '#d7dae0',
+    'happiness': '#ff0080',
+    'neutral': '#d7dae0',
+    'sadness': '#707784',
+    'surprise': '#aa94d0'
+}
 
 app = Flask(__name__, static_url_path='')
 client = AzureClient()
@@ -95,6 +105,8 @@ def process():
                     for emotion in EMOTIONS
     }
 
+    status = compute.status(history)
+
     response = {
         "time": tm.st,
         "interest": interest,
@@ -106,7 +118,9 @@ def process():
         "is": take_data(h_is),
         "ds": take_data(h_ds),
         "isa": isa,
-        "histogram": histogram_data
+        "histogram": histogram_data,
+        "status": status,
+        "status_color": COLORS[status]
     }
     return json.dumps(response)
 
