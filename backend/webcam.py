@@ -18,6 +18,7 @@ import urllib.request
 import os
 import time
 from PIL import Image
+from threading import Thread
 
 def takeImage(filename):
     url = "http://localhost:4747/cam/1/frame.jpg"
@@ -45,18 +46,28 @@ def takeImage2(filename, tm):
     # Pull and remove from device
     ex(adb + 'pull ' + dcim + file + ' tmp', p=False)
     tm.measure("Pull")
-    ex(adb + 'shell rm ' + dcim + file)
-    tm.measure("Remove")
 
-    # Compress
-    picture = Image.open("tmp/" + file)
-    os.remove(filename) if os.path.exists(filename) else None
-    picture.save(filename, "JPEG", optimize=True, quality=10)
+    def remove(cmd):
+        ex(cmd)
+        tm.measure("Remove")
+    thread = Thread(target=remove, args=(adb + 'shell rm ' + dcim + file,))
+    thread.start()
+
+    compress("tmp/" + file, filename)
     tm.measure("Compress")
+
+    thread.join()
 
     # Remove temp file
     #os.remove("tmp/" + file)
-    tm.measure("Remove")
+    #tm.measure("Remove")
+
+def compress(input, output):
+    # Compress
+    picture = Image.open(input)
+    os.remove(output) if os.path.exists(output) else None
+    picture.save(output, "JPEG", optimize=True, quality=20)
+
 
 #if __name__ == '__main__':
 #    takeImage2("image.jpg")
