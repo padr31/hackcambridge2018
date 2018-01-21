@@ -10,7 +10,8 @@ import { Subscription } from 'rxjs/Subscription';
 export class QuteComponent implements OnInit {
  
     apiService:ApiService;
-    processSubscription:Subscription;        
+    processSubscription:Subscription;
+    suggestion:string;        
 
     constructor(apiService:ApiService) { 
         this.apiService = apiService;

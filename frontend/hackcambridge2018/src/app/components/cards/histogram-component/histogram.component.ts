@@ -16,7 +16,7 @@ export class HistogramComponent implements OnInit {
 
   public emotions = ['anger', 'contempt', 'disgust', 'fear', 'happiness', 'neutral', 'sadness', 'surprise'];
 
-  public chartDatasets: Array<any> = this.emotions.map(emotion => ({data: [], label: emotion}));
+  public chartDatasets: Array<any> = [{data: [], label: 'emotions'}];
 
   constructor(apiService: ApiService) {
     this.apiService = apiService;
@@ -64,7 +64,7 @@ export class HistogramComponent implements OnInit {
     this.processSubscription = this.apiService.imageChange.subscribe(
       data => {
         console.log('Got data in graph-component');
-        this.chartDatasets = this.emotions.map((emotion, i) => ({data: [data.histogram[i]], label: emotion}));
+        this.chartDatasets[0].data = data.histogram;
         this.chartLabels = data.histogram_labels;
         console.log(this.chartDatasets);
         console.log(this.chartLabels);
