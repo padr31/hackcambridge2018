@@ -1,5 +1,19 @@
 # Impressio
 
+This app was developed in 24 hours at the [Hack Cambridge 2018](https://hackcambridge.com/) hackathon.
+
+Impressio estimates engagement and amusement of an audience from a real-time camera stream.
+
+<img src="/screenshots/screenshot1.jpg?raw=true" alt="Cover image"/>
+
+**Authors:**
+
+- Pavol Drotár ([padr31](https://github.com/padr31))
+- Juraj Mičko ([jjurm](https://github.com/jjurm))
+- Michal Pándy ([mpmisko](https://github.com/mpmisko))
+- Marko Puza ([markopuza](https://github.com/markopuza))
+- Martin Ferianc ([fexter-svk](https://github.com/fexter-svk))
+
 ## Inspiration
 
 In order to make an impactful presentation audience engagement is crucial. Currently, there are little to no tools that would aid presenters in their endeavour to communicate their ideas in an amusing and witty way. We wanted to create a tool that would show presenters live data about how the audience is feeling about their presentation. This way they could not only adjust thier delivery in the moment, but also go over their performance after the presentation.
